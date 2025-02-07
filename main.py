@@ -12,7 +12,8 @@ ldr = ADC(Pin(26))
 print("Running")
 
 NUM_LEDS = 1
-LED_PIN = 22
+LED_PIN = 22  # PICO_DEFAULT_WS2812_PIN
+POWER_PIN = 23  # PICO_DEFAULT_WS2812_POWER_PIN
 
 @rp2.asm_pio(sideset_init=rp2.PIO.OUT_LOW, out_shiftdir=rp2.PIO.SHIFT_LEFT, autopull=True, pull_thresh=24)
 def ws2812():
@@ -28,6 +29,10 @@ def ws2812():
     nop()                   .side(0)    [T2 - 1]
     wrap()
 
+# Set up the power pin
+power_pin = Pin(POWER_PIN, Pin.OUT)
+power_pin.value(1)  # Turn on power to the LED
+
 # Create the StateMachine with the ws2812 program, outputting on LED_PIN
 sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=Pin(LED_PIN))
 
@@ -37,10 +42,10 @@ sm.active(1)
 def set_led_color(color):
     sm.put(array.array("I", [color]), 8)
 
-set_led_color(0x010101)
-
 while True:
     led.toggle()
+
+    print(ldr.read_u16())
 
     if ldr.read_u16() > 2000:
         set_led_color(0x000001)
