@@ -3,17 +3,11 @@ from time import sleep
 import array
 import rp2
 
-led = Pin(25, Pin.OUT)
+pir = Pin(26, Pin.IN)
+ldr = ADC(Pin(27))
 
-pir = Pin(3, Pin.IN)
-
-ldr = ADC(Pin(26))
-
-print("Running")
-
-NUM_LEDS = 1
-LED_PIN = 22  # PICO_DEFAULT_WS2812_PIN
-POWER_PIN = 23  # PICO_DEFAULT_WS2812_POWER_PIN
+NUM_LEDS = 7
+LED_PIN = 15
 
 @rp2.asm_pio(sideset_init=rp2.PIO.OUT_LOW, out_shiftdir=rp2.PIO.SHIFT_LEFT, autopull=True, pull_thresh=24)
 def ws2812():
@@ -29,30 +23,28 @@ def ws2812():
     nop()                   .side(0)    [T2 - 1]
     wrap()
 
-# Set up the power pin
-power_pin = Pin(POWER_PIN, Pin.OUT)
-power_pin.value(1)  # Turn on power to the LED
-
 # Create the StateMachine with the ws2812 program, outputting on LED_PIN
 sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=Pin(LED_PIN))
 
 # Start the StateMachine, it will wait for data on its FIFO.
 sm.active(1)
 
+# green, red, blue
+orangy = 0x204005 
+
 def set_led_color(color):
-    sm.put(array.array("I", [color]), 8)
+    sm.put(array.array("I", [color] * NUM_LEDS), 8)
 
 while True:
-    led.toggle()
+    ldr_value = ldr.read_u16()
+    pir_value = pir.value()
+    night = ldr_value > 5000
 
-    print(ldr.read_u16())
+    print(ldr_value, night, pir_value)
 
-    if ldr.read_u16() > 2000:
-        set_led_color(0x000001)
+    if pir_value and night:
+        set_led_color(orangy)
     else:
-        set_led_color(0x010101)
+        set_led_color(0)
 
-    if pir.value():
-        sleep(0.1)
-    else:
-        sleep(0.5)
+    sleep(0.1)
