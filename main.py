@@ -5,7 +5,7 @@ from tools import Neopixel
 pir = Pin(26, Pin.IN)
 ldr = ADC(Pin(27))
 
-led = Neopixel(Pin(15), 7, 0.125)
+led = Neopixel(Pin(15), 7, 0.2)
 
 orangy = (255, 127, 20)
 
@@ -19,10 +19,10 @@ while True:
 
     if (pir_val != prev_pir_val):
         print("PIR state change", pir_val, night)
-        if pir_val and night:
-            led.fill(orangy)
+        if pir_val:
+            led.fade_in(orangy, 9)
         else:
-            led.fill(0)
+            led.fade_out(orangy)
 
     prev_pir_val = pir_val
 
