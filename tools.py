@@ -15,6 +15,9 @@ def ws2812():
     nop()                   .side(0)    [T2 - 1]
     wrap()
 
+def from_rgb(r, g, b):
+    return (g<<16) | (r<<8) | b
+
 class Neopixel:
     def __init__(self, pin, num):
         self.num = num

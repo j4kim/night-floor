@@ -1,6 +1,6 @@
 from machine import Pin, ADC
 from time import sleep
-from tools import Neopixel
+from tools import Neopixel, from_rgb
 
 pir = Pin(26, Pin.IN)
 ldr = ADC(Pin(27))
@@ -8,7 +8,7 @@ ldr = ADC(Pin(27))
 led = Neopixel(Pin(15), 7)
 
 # green, red, blue
-orangy = 0x204005
+orangy = from_rgb(32, 64, 5)
 
 pir_val = 0
 prev_pir_val = 0
