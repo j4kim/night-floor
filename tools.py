@@ -15,14 +15,20 @@ def ws2812():
     nop()                   .side(0)    [T2 - 1]
     wrap()
 
-def from_rgb(r, g, b):
-    return (g<<16) | (r<<8) | b
-
 class Neopixel:
-    def __init__(self, pin, num):
+    def __init__(self, pin, num, brightness = 1):
         self.num = num
+        self.brightness = brightness
         self.sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=pin)
         self.sm.active(1)
 
     def fill(self, color):
+        if type(color) is tuple:
+            color = self.from_rgb(*color)
         self.sm.put(array.array("I", [color] * self.num), 8)
+
+    def from_rgb(self, r, g, b):
+        r = int(self.brightness * r)
+        g = int(self.brightness * g)
+        b = int(self.brightness * b)
+        return (g<<16) | (r<<8) | b
