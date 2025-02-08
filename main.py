@@ -11,6 +11,7 @@ orangy = (255, 127, 20)
 
 pir_val = 0
 prev_pir_val = 0
+lit = False
 
 while True:
     ldr_value = ldr.read_u16()
@@ -20,9 +21,17 @@ while True:
     if (pir_val != prev_pir_val):
         print("PIR state change", pir_val, night)
         if pir_val:
-            led.fade_in(orangy, 9)
+            if night:
+                led.fade_in(orangy, 9)
+                lit = True
+                print("Stay lit for 5 seconds")
+                sleep(5)
+            else:
+                print("It is not night")
         else:
-            led.fade_out(orangy)
+            if lit:
+                led.fade_out(orangy)
+                lit = False
 
     prev_pir_val = pir_val
 
