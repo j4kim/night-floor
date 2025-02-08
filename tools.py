@@ -24,11 +24,11 @@ class Neopixel:
 
     def fill(self, color):
         if type(color) is tuple:
-            color = self.from_rgb(*color)
+            color = self.from_rgb(color, self.brightness)
         self.sm.put(array.array("I", [color] * self.num), 8)
 
-    def from_rgb(self, r, g, b):
-        r = int(self.brightness * r)
-        g = int(self.brightness * g)
-        b = int(self.brightness * b)
+    def from_rgb(self, rgb: tuple, bright=1):
+        r = int(bright * rgb[0])
+        g = int(bright * rgb[1])
+        b = int(bright * rgb[2])
         return (g<<16) | (r<<8) | b
