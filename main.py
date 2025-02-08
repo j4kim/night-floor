@@ -10,16 +10,21 @@ led = Neopixel(Pin(15), 7)
 # green, red, blue
 orangy = 0x204005
 
+pir_val = 0
+prev_pir_val = 0
+
 while True:
     ldr_value = ldr.read_u16()
-    pir_value = pir.value()
     night = ldr_value > 5000
+    pir_val = pir.value()
 
-    print(ldr_value, night, pir_value)
+    if (pir_val != prev_pir_val):
+        print("PIR state change", pir_val)
+        if pir_val and night:
+            led.fill(orangy)
+        else:
+            led.fill(0)
 
-    if pir_value and night:
-        led.fill(orangy)
-    else:
-        led.fill(0)
+    prev_pir_val = pir_val
 
     sleep(0.1)
