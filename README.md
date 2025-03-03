@@ -4,11 +4,12 @@ Système à détection de mouvement pour allumer une lumière en dessous d'une t
 
 ## Matériel
 
-- Microcontrôleur [Seeed Studio XIAO RP2350](https://wiki.seeedstudio.com/getting-started-xiao-rp2350/#hardware-overview)
+- Microcontrôleur [Waveshare RP2040-One](https://www.waveshare.com/wiki/RP2040-One)
 - 2 x Capteur de mouvement [PIR HC-SR501](https://www.bastelgarage.ch/module-de-capteur-de-mouvement-pir-hc-sr501)
-- 2 x Photorésistance (LDR) [GM5516](https://www.bastelgarage.ch/capteur-de-lumiere-photoresistance-gm5516)
+- 1 x Photorésistance (LDR) [GM5516](https://www.bastelgarage.ch/capteur-de-lumiere-photoresistance-gm5516)
 - 2 x [Neopixel Rond 7x WS2812 RGB LED](https://www.bastelgarage.ch/neopixel-rond-7x-ws2812-rgb-led)
 - 4 x Interrupteur [MTS-102](https://www.bastelgarage.ch/interrupteur-a-bascule-on-on-mts-102)
+- 2 x Boutons poussoirs
 
 ## Diagramme
 
