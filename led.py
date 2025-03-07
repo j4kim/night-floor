@@ -29,11 +29,14 @@ class Led:
         self.sm.active(1)
         self.brgen = bight_gen()
         self.brightness = next(self.brgen)
+        self.color = None
 
     def fill(self, color):
         if type(color) is tuple:
             color = self.from_rgb(color, self.brightness)
-        self.sm.put(array.array("I", [color] * self.num), 8)
+        if color != self.color:
+            self.sm.put(array.array("I", [color] * self.num), 8)
+            self.color = color
 
     def from_rgb(self, rgb: tuple, bright=1):
         r = int(bright * rgb[0])
