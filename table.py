@@ -1,3 +1,5 @@
+orangy = (255, 127, 20)
+
 class Table:
     def __init__(self, name, ldr, btn, switch_pir, switch_led, pir, led):
         """Initialize a Table object with sensors and controls.
@@ -27,3 +29,7 @@ class Table:
             self.switch_led.value(),
             self.pir.value()
         )
+        if self.switch_led.value() == 0:
+            self.led.fill(orangy)
+        else:
+            self.led.fill(0)
