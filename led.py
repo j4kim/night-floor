@@ -32,12 +32,9 @@ class Led:
         self.brightness = next(self.brgen)
         self.color = None
 
-    def on(self):
-        color = self.from_rgb(self.target_color, self.brightness)
+    def tune(self, b = 1):
+        color = self.from_rgb(self.target_color, self.brightness * b)
         self.fill(color)
-
-    def off(self):
-        self.fill(0)
 
     def fill(self, color):
         if color != self.color:

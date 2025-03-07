@@ -41,7 +41,7 @@ class Table:
 
     def pirloop(self, state):
         if not self.is_night:
-            self.led.off()
+            self.led.tune(0)
             return
 
         t = time()
@@ -54,23 +54,23 @@ class Table:
             self.led_state = "fade in"
         elif diff < 10:
             self.led_state = "lit"
-            self.led.on()
+            self.led.tune(1)
         elif diff < 12:
             self.led_state = "fade out"
         else:
             self.led_state = "off"
-            self.led.off()
+            self.led.tune(0)
 
     def loop(self):
         state = State(self)
         self.debugState(state)
 
         if state.switch_led_down:
-            self.led.on()
+            self.led.tune(1)
         elif state.switch_pir_down:
             self.pirloop(state)
         else:
-            self.led.off()
+            self.led.tune(0)
 
         if state.btn_down and not self.prevstate.btn_down:
             self.led.change_brightness()
