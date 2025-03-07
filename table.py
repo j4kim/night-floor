@@ -35,12 +35,20 @@ class Table:
             self.led.brightness,
         )
 
+    def pirloop(self, state):
+        if state.motion and self.is_night():
+            self.led.fill(orangy)
+        else:
+            self.led.fill(0)
+
     def loop(self):
         state = State(self)
         self.debug(state)
 
         if state.switch_led_down:
             self.led.fill(orangy)
+        elif state.switch_pir_down:
+            self.pirloop(state)
         else:
             self.led.fill(0)
 
