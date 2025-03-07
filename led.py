@@ -44,26 +44,5 @@ class Led:
         b = int(bright * rgb[2])
         return (g<<16) | (r<<8) | b
 
-    def fade(self, target_color: tuple, br_from=0, br_to=1, seconds=3):
-        fps = 10
-        steps = int(seconds * fps)
-        bright_step = (br_to - br_from) / steps
-        bright = br_from
-        for i in range(steps):
-            bright = bright + bright_step
-            color = self.from_rgb(target_color, bright)
-            self.fill(color)
-            sleep(1/fps)
-
-    def fade_in(self, target_color, seconds=3):
-        print("start fade in")
-        self.fade(target_color, 0, self.brightness, seconds)
-        print("end fade in")
-
-    def fade_out(self, source_color, seconds=3):
-        print("start fade out")
-        self.fade(source_color, self.brightness, 0, seconds)
-        print("end fade out")
-
     def change_brightness(self):
         self.brightness = next(self.brgen)
