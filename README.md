@@ -13,4 +13,4 @@ Système à détection de mouvement pour allumer une lumière en dessous d'une t
 
 ## Diagramme
 
-[PDF](diagram.pdf)
+[diagram.pdf](diagram.pdf)
