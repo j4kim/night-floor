@@ -1,3 +1,5 @@
+from state import State
+
 orangy = (255, 127, 20)
 
 class Table:
@@ -21,27 +23,28 @@ class Table:
         self.pir = pir
         self.led = led
         self.brightness = 20
+        self.prevstate = State(self)
 
-    def printState(self):
+    def debug(self, state):
         print(
             self.name,
             self.ldr.read_u16(),
-            self.btn.value(),
-            self.switch_pir.value(),
-            self.switch_led.value(),
-            self.pir.value(),
+            state,
             self.brightness,
         )
 
     def loop(self):
-        self.printState()
+        state = State(self)
+        self.debug(state)
 
-        if self.switch_led.value() == 0:
+        if state.switch_led_down:
             self.led.fill(orangy)
         else:
             self.led.fill(0)
 
-        if self.btn.value() == 0:
+        if state.btn_down:
             self.brightness += 5
             self.brightness %= 101
             self.led.brightness = self.brightness / 100
+
+        self.prevstate = state
