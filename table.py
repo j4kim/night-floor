@@ -13,7 +13,7 @@ class Table:
             switch_pir (Pin): PIR enable/disable switch
             switch_led (Pin): LED enable/disable switch
             pir (Pin): PIR motion sensor input
-            led (Neopixel): LED strip controller
+            led (Led): Neopixel LED strip controller
         """
         self.name = name
         self.ldr = ldr

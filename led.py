@@ -18,17 +18,17 @@ def ws2812():
 
 def bight_gen():
     while True:
+        yield 0.2
         yield 0.5
         yield 1
-        yield 0.2
 
-class Neopixel:
-    def __init__(self, pin, num, brightness = 1):
+class Led:
+    def __init__(self, pin, num):
         self.num = num
-        self.brightness = brightness
         self.sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=pin)
         self.sm.active(1)
         self.brgen = bight_gen()
+        self.brightness = next(self.brgen)
 
     def fill(self, color):
         if type(color) is tuple:

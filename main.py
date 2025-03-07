@@ -1,6 +1,6 @@
 from machine import Pin, ADC
 from time import sleep
-from tools import Neopixel
+from led import Led
 from table import Table
 
 ldr = ADC(Pin(27))
@@ -12,7 +12,7 @@ table_2 = Table(
     switch_pir = Pin(13, Pin.IN, Pin.PULL_UP),
     switch_led = Pin(14, Pin.IN, Pin.PULL_UP),
     pir = Pin(26, Pin.IN),
-    led = Neopixel(Pin(15), 7, 0.2)
+    led = Led(Pin(15), 7)
 )
 
 while True:
