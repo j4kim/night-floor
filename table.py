@@ -1,5 +1,5 @@
 from state import State
-from time import time
+from time import ticks_diff, ticks_ms
 
 class Table:
     def __init__(self, name, ldr, btn, switch_pir, switch_led, pir, led):
@@ -22,7 +22,7 @@ class Table:
         self.pir = pir
         self.led = led
         self.prevstate = State(self)
-        self.lit_at = time() - 60
+        self.lit_at = ticks_ms() - 60000
         self.led_state = "off"
 
     def is_night(self):
@@ -44,19 +44,21 @@ class Table:
             self.led.tune(0)
             return
 
-        t = time()
-        diff = t - self.lit_at
+        t = ticks_ms()
+        diff = ticks_diff(t, self.lit_at)
 
         if state.motion and not self.prevstate.motion:
             self.lit_at = t
 
-        if diff < 2:
-            self.led_state = "fade in"
-        elif diff < 10:
+        if diff < 2000:
+            self.led_state = "fade-in"
+            self.led.tune(diff / 2000)
+        elif diff < 10000:
             self.led_state = "lit"
             self.led.tune(1)
-        elif diff < 12:
-            self.led_state = "fade out"
+        elif diff < 12000:
+            self.led_state = "fade-out"
+            self.led.tune(1 - (diff - 10000) / 2000)
         else:
             self.led_state = "off"
             self.led.tune(0)

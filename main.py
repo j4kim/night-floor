@@ -18,4 +18,4 @@ table_2 = Table(
 while True:
     table_2.loop()
 
-    sleep(0.1)
+    sleep(0.05)
