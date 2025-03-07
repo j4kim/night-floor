@@ -1,5 +1,5 @@
 from machine import Pin, ADC
-from time import sleep
+from time import sleep_ms
 from led import Led
 from table import Table
 
@@ -18,4 +18,4 @@ table_2 = Table(
 while True:
     table_2.loop()
 
-    sleep(0.05)
+    sleep_ms(50)
