@@ -50,16 +50,18 @@ class Table:
         diff = ticks_diff(t, self.lit_at)
 
         if state.motion and not self.prevstate.motion:
+            if self.led_state != "off":
+                t = t - self.fade_duration
             self.lit_at = t
 
         if diff < self.fade_duration:
-            self.led_state = "fade-in"
+            self.led_state = "fade-in {}".format(diff)
             self.led.tune(diff / self.fade_duration)
         elif diff < self.lit_duration:
-            self.led_state = "lit"
+            self.led_state = "lit {}".format(diff)
             self.led.tune(1)
         elif diff < (self.lit_duration + self.fade_duration):
-            self.led_state = "fade-out"
+            self.led_state = "fade-out {}".format(diff)
             self.led.tune(1 - (diff - self.lit_duration) / self.fade_duration)
         else:
             self.led_state = "off"
