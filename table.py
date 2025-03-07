@@ -24,6 +24,8 @@ class Table:
         self.prevstate = State(self)
         self.lit_at = ticks_ms() - 60000
         self.led_state = "off"
+        self.fade_duration = 2000
+        self.lit_duration = 10000
 
     def is_night(self):
         return self.ldr.read_u16() > 10000
@@ -50,15 +52,15 @@ class Table:
         if state.motion and not self.prevstate.motion:
             self.lit_at = t
 
-        if diff < 2000:
+        if diff < self.fade_duration:
             self.led_state = "fade-in"
-            self.led.tune(diff / 2000)
-        elif diff < 10000:
+            self.led.tune(diff / self.fade_duration)
+        elif diff < self.lit_duration:
             self.led_state = "lit"
             self.led.tune(1)
-        elif diff < 12000:
+        elif diff < (self.lit_duration + self.fade_duration):
             self.led_state = "fade-out"
-            self.led.tune(1 - (diff - 10000) / 2000)
+            self.led.tune(1 - (diff - self.lit_duration) / self.fade_duration)
         else:
             self.led_state = "off"
             self.led.tune(0)
