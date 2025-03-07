@@ -1,4 +1,5 @@
 from state import State
+from time import time
 
 orangy = (255, 127, 20)
 
@@ -23,27 +24,40 @@ class Table:
         self.pir = pir
         self.led = led
         self.prevstate = State(self)
+        self.lit_at = None
 
     def is_night(self):
         return self.ldr.read_u16() > 10000
 
-    def debug(self, state):
-        print(
-            self.name,
+    def debug(self, *strs):
+        print(self.name, ":", *strs)
+
+    def debugState(self, state):
+        self.debug(
             self.ldr.read_u16(),
-            state,
+            str(state),
             self.led.brightness,
         )
 
     def pirloop(self, state):
-        if state.motion and self.is_night():
+        if not self.is_night:
+            self.led.fill(0)
+            return
+
+        t = time()
+
+        if state.motion and not self.prevstate.motion:
+            self.lit_at = t
+            self.debug("light up")
+
+        if self.lit_at and t - self.lit_at < 10:
             self.led.fill(orangy)
         else:
             self.led.fill(0)
 
     def loop(self):
         state = State(self)
-        self.debug(state)
+        self.debugState(state)
 
         if state.switch_led_down:
             self.led.fill(orangy)
