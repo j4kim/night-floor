@@ -23,17 +23,23 @@ def bight_gen():
         yield 1
 
 class Led:
-    def __init__(self, pin, num):
+    def __init__(self, pin, num, target_color: tuple):
         self.num = num
         self.sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=pin)
         self.sm.active(1)
+        self.target_color = target_color
         self.brgen = bight_gen()
         self.brightness = next(self.brgen)
         self.color = None
 
+    def on(self):
+        color = self.from_rgb(self.target_color, self.brightness)
+        self.fill(color)
+
+    def off(self):
+        self.fill(0)
+
     def fill(self, color):
-        if type(color) is tuple:
-            color = self.from_rgb(color, self.brightness)
         if color != self.color:
             self.sm.put(array.array("I", [color] * self.num), 8)
             self.color = color

@@ -12,7 +12,7 @@ table_2 = Table(
     switch_pir = Pin(13, Pin.IN, Pin.PULL_UP),
     switch_led = Pin(14, Pin.IN, Pin.PULL_UP),
     pir = Pin(26, Pin.IN),
-    led = Led(Pin(15), 7)
+    led = Led(Pin(15), 7, (255, 127, 20))
 )
 
 while True:

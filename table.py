@@ -1,8 +1,6 @@
 from state import State
 from time import time
 
-orangy = (255, 127, 20)
-
 class Table:
     def __init__(self, name, ldr, btn, switch_pir, switch_led, pir, led):
         """Initialize a Table object with sensors and controls.
@@ -43,7 +41,7 @@ class Table:
 
     def pirloop(self, state):
         if not self.is_night:
-            self.led.fill(0)
+            self.led.off()
             return
 
         t = time()
@@ -56,23 +54,23 @@ class Table:
             self.led_state = "fade in"
         elif diff < 10:
             self.led_state = "lit"
-            self.led.fill(orangy)
+            self.led.on()
         elif diff < 12:
             self.led_state = "fade out"
         else:
             self.led_state = "off"
-            self.led.fill(0)
+            self.led.off()
 
     def loop(self):
         state = State(self)
         self.debugState(state)
 
         if state.switch_led_down:
-            self.led.fill(orangy)
+            self.led.on()
         elif state.switch_pir_down:
             self.pirloop(state)
         else:
-            self.led.fill(0)
+            self.led.off()
 
         if state.btn_down and not self.prevstate.btn_down:
             self.led.change_brightness()
