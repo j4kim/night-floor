@@ -16,12 +16,19 @@ def ws2812():
     nop()                   .side(0)    [T2 - 1]
     wrap()
 
+def bight_gen():
+    while True:
+        yield 0.5
+        yield 1
+        yield 0.2
+
 class Neopixel:
     def __init__(self, pin, num, brightness = 1):
         self.num = num
         self.brightness = brightness
         self.sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=pin)
         self.sm.active(1)
+        self.brgen = bight_gen()
 
     def fill(self, color):
         if type(color) is tuple:
@@ -54,3 +61,6 @@ class Neopixel:
         print("start fade out")
         self.fade(source_color, self.brightness, 0, seconds)
         print("end fade out")
+
+    def change_brightness(self):
+        self.brightness = next(self.brgen)

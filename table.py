@@ -22,7 +22,6 @@ class Table:
         self.switch_led = switch_led
         self.pir = pir
         self.led = led
-        self.brightness = 20
         self.prevstate = State(self)
 
     def debug(self, state):
@@ -30,7 +29,7 @@ class Table:
             self.name,
             self.ldr.read_u16(),
             state,
-            self.brightness,
+            self.led.brightness,
         )
 
     def loop(self):
@@ -42,9 +41,7 @@ class Table:
         else:
             self.led.fill(0)
 
-        if state.btn_down:
-            self.brightness += 5
-            self.brightness %= 101
-            self.led.brightness = self.brightness / 100
+        if state.btn_down and not self.prevstate.btn_down:
+            self.led.change_brightness()
 
         self.prevstate = state
