@@ -24,6 +24,9 @@ class Table:
         self.led = led
         self.prevstate = State(self)
 
+    def is_night(self):
+        return self.ldr.read_u16() > 10000
+
     def debug(self, state):
         print(
             self.name,
