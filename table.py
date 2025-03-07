@@ -20,6 +20,7 @@ class Table:
         self.switch_led = switch_led
         self.pir = pir
         self.led = led
+        self.brightness = 20
 
     def printState(self):
         print(
@@ -28,12 +29,19 @@ class Table:
             self.btn.value(),
             self.switch_pir.value(),
             self.switch_led.value(),
-            self.pir.value()
+            self.pir.value(),
+            self.brightness,
         )
 
     def loop(self):
         self.printState()
+
         if self.switch_led.value() == 0:
             self.led.fill(orangy)
         else:
             self.led.fill(0)
+
+        if self.btn.value() == 0:
+            self.brightness += 5
+            self.brightness %= 101
+            self.led.brightness = self.brightness / 100
