@@ -21,14 +21,18 @@ class Table:
         self.pir = pir
         self.led = led
 
-    def loop(self):
+    def printState(self):
         print(
+            self.name,
             self.ldr.read_u16(),
             self.btn.value(),
             self.switch_pir.value(),
             self.switch_led.value(),
             self.pir.value()
         )
+
+    def loop(self):
+        self.printState()
         if self.switch_led.value() == 0:
             self.led.fill(orangy)
         else:
