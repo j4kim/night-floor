@@ -24,7 +24,8 @@ class Table:
         self.pir = pir
         self.led = led
         self.prevstate = State(self)
-        self.lit_at = None
+        self.lit_at = time() - 60
+        self.led_state = "off"
 
     def is_night(self):
         return self.ldr.read_u16() > 10000
@@ -37,6 +38,7 @@ class Table:
             self.ldr.read_u16(),
             str(state),
             self.led.brightness,
+            self.led_state,
         )
 
     def pirloop(self, state):
@@ -45,14 +47,20 @@ class Table:
             return
 
         t = time()
+        diff = t - self.lit_at
 
         if state.motion and not self.prevstate.motion:
             self.lit_at = t
-            self.debug("light up")
 
-        if self.lit_at and t - self.lit_at < 10:
+        if diff < 2:
+            self.led_state = "fade in"
+        elif diff < 10:
+            self.led_state = "lit"
             self.led.fill(orangy)
+        elif diff < 12:
+            self.led_state = "fade out"
         else:
+            self.led_state = "off"
             self.led.fill(0)
 
     def loop(self):
