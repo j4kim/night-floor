@@ -42,7 +42,7 @@ class Table:
             self.prev_debug_parts = str_parts
 
     def pirloop(self, state):
-        if not self.is_night:
+        if not self.is_night():
             self.led.tune(0)
             return
 
