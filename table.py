@@ -22,7 +22,7 @@ class Table:
         self.pir = pir
         self.led = led
         self.prevstate = State(self)
-        self.lit_at = ticks_ms() - 60000
+        self.lit_at = 0
         self.led_state = "off"
         self.fade_duration = 2000
         self.lit_duration = 10000
