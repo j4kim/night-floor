@@ -26,6 +26,7 @@ class Table:
         self.led_state = "off"
         self.fade_duration = 2000
         self.lit_duration = 10000
+        self.prev_debug_parts = ''
 
     def is_night(self):
         return self.ldr.read_u16() > 10000
@@ -34,12 +35,11 @@ class Table:
         print(self.name, ":", *strs)
 
     def debugState(self, state):
-        self.debug(
-            self.ldr.read_u16(),
-            str(state),
-            self.led.brightness,
-            self.led_state,
-        )
+        parts = [str(state), self.led.brightness, self.led_state]
+        str_parts = str(parts)
+        if str_parts != self.prev_debug_parts:
+            self.debug(self.ldr.read_u16(), *parts)
+            self.prev_debug_parts = str_parts
 
     def pirloop(self, state):
         if not self.is_night:
