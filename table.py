@@ -49,11 +49,6 @@ class Table:
         t = ticks_ms()
         diff = ticks_diff(t, self.lit_at)
 
-        if state.motion and not self.prevstate.motion:
-            if self.led_state != "off":
-                t = t - self.fade_duration
-            self.lit_at = t
-
         if diff < self.fade_duration:
             self.led_state = "fade-in"
             self.led.tune(diff / self.fade_duration)
@@ -66,6 +61,11 @@ class Table:
         else:
             self.led_state = "off"
             self.led.tune(0)
+
+        if state.motion and not self.prevstate.motion:
+            if self.led_state != "off":
+                t = t - self.fade_duration
+            self.lit_at = t
 
     def loop(self):
         state = State(self)
